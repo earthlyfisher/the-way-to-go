@@ -12,12 +12,17 @@ import (
 	"net/http"
 	"io/ioutil"
 	"log"
+	"reflect"
 )
 
 func main() {
 	fmt.Println("welcome!")
 
-	beyondHello()
+	p := pair{1, 2}
+	//类型断言
+	typeAssertion(p)
+
+	//beyondHello()
 }
 
 func beyondHello() {
@@ -303,10 +308,9 @@ func learnConcurrency() {
 }
 
 func learnWebProgramming() {
-	go func(){
+	go func() {
 		requestServer()
 	}()
-
 
 	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello,this version 1!"))
@@ -335,4 +339,13 @@ func requestServer() {
 	body, err = ioutil.ReadAll(resp.Body)
 	fmt.Printf("\n服务器消息test： `%s`", string(body))
 
+}
+
+func typeAssertion(object interface{}) {
+	value, ok := object.(Stringer)
+	if ok {
+		fmt.Printf("接口类型断言成功，类型为 <%v> ", reflect.TypeOf(value))
+	} else {
+		fmt.Println("接口类型断言失败")
+	}
 }
